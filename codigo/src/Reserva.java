@@ -7,9 +7,9 @@ public class Reserva {
     private Mesa mesa;
 
     public Reserva(LocalDateTime horaChegada, LocalDateTime horaSaida, PropietarioReserva propietarioReserva, Mesa mesa){
-        this.horaChegada = LocalDateTime;
-        this.horaSaida = LocalDateTime;
-        this.proprietarioReserva = proprietarioReserva;
+        this.horaChegada = horaChegada;
+        this.horaSaida = horaSaida;
+        this.propietarioReserva = propietarioReserva;
         this.mesa = mesa;
     }
 
