@@ -14,17 +14,6 @@ public class PropietarioReserva {
         this.cpf = cpf;
     }
 
-    // Método para realizar uma requisição
-    public void realizarRequisicao(int numPessoas) {
-        this.totalPessoas = numPessoas;
-        // Aqui vai a lógica para realizar uma requisição
-    }
-
-    // Método para entrar na fila de espera
-    public void entrarFilaEspera() {
-        // Aqui vai a lógica para entrar na fila de espera
-    }
-
     // Método para registrar a entrada do cliente
     public void registrarEntrada(Date dataEntrada) {
         // Registra a data e hora atual como a entrada do cliente
