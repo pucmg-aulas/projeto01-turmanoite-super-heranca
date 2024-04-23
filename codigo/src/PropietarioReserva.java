@@ -1,5 +1,3 @@
-import java.util.Date;
-
 public class PropietarioReserva {
     private String nome;
     private int telefone;
@@ -12,20 +10,6 @@ public class PropietarioReserva {
         this.telefone = telefone;
         this.totalPessoas = totalPessoas;
         this.cpf = cpf;
-    }
-
-    // Método para registrar a entrada do cliente
-    public void registrarEntrada(Date dataEntrada) {
-        // Registra a data e hora atual como a entrada do cliente
-        Date dataEntrada = new Date();
-        System.out.println("Entrada registrada para " + this.nome + " em " + dataEntrada);
-    }
-
-    // Método para registrar a saída do cliente
-    public void registrarSaida(Date dataSaida) {
-        // Registra a data e hora atual como a entrada do cliente
-        Date dataEntrada = new Date();
-        System.out.println("Entrada registrada para " + this.nome + " em " + dataEntrada);
     }
 
     // Método para atualizar o nome do cliente
