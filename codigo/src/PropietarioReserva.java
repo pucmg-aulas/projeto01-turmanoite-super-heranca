@@ -1,11 +1,11 @@
 public class PropietarioReserva {
     private String nome;
-    private int telefone;
+    private String telefone;
     private int totalPessoas;
-    private int cpf;
+    private String cpf;
 
     // Construtor
-    public PropietarioReserva(String nome, int telefone, int totalPessoas, int cpf) {
+    public PropietarioReserva(String nome, String telefone, int totalPessoas, String cpf) {
         this.nome = nome;
         this.telefone = telefone;
         this.totalPessoas = totalPessoas;
@@ -18,12 +18,12 @@ public class PropietarioReserva {
     }
 
     // Método para atualizar o telefone do cliente
-    public void setTelefone(int novoTelefone) {
+    public void setTelefone(String novoTelefone) {
         this.telefone = novoTelefone;
     }
 
     // Método para atualizar o CPF do cliente
-    public void setCpf(int novoCpf) {
+    public void setCpf(String novoCpf) {
         this.cpf = novoCpf;
     }
     
@@ -37,7 +37,7 @@ public class PropietarioReserva {
         return this.nome;
     }
 
-    public int getTelefone() {
+    public String getTelefone() {
         return this.telefone;
     }
 
@@ -45,7 +45,7 @@ public class PropietarioReserva {
         return this.totalPessoas;
     }
 
-    public int getCpf() {
+    public String getCpf() {
         return this.cpf;
     }
 }
