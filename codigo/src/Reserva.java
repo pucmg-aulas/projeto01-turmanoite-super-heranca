@@ -11,12 +11,19 @@ public class Reserva {
         this.mesa = mesa;
     }
 
-    public void fazerReserva() {
-        this.mesa.ocuparMesa();
+    public void registrarEntrada() {
         this.horaChegada = LocalDateTime.now();
     }
 
-    public void encerrarReserva() {
+    public void registrarSaida() {
         this.horaSaida = LocalDateTime.now();
+    }
+
+    public LocalDateTime getHoraEntrada() {
+        return this.horaChegada;
+    }
+
+    public LocalDateTime getHoraSaida() {
+        return this.horaSaida;
     }
 }
