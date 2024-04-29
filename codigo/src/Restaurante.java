@@ -11,11 +11,11 @@ public class Restaurante {
         this.mesas = mesas;
     }
 
-    public void addClienteListaEspera(String cliente) {
-        this.lsitaDeEspera.add(cliente);
+    public void addProprietarioReservaListaEspera(String proprietarioReserva) {
+        this.lsitaDeEspera.add(proprietarioReserva);
     }
-    public void removerClienteListaEspera(String cliente){
-        this.lsitaDeEspera.remove(cliente);
+    public void removerProprietarioReservaListaEspera(String proprietarioReserva){
+        this.lsitaDeEspera.remove(proprietarioReserva);
     }
     public void addMesa(Mesa mesa) {
         this.mesas.add(mesa);
