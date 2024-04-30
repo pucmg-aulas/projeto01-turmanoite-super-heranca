@@ -1,24 +1,50 @@
 import java.util.LinkedList;
 
 public class Restaurante {
-    private LinkedList<String> lsitaDeEspera;
+    private LinkedList<PropietarioReserva> lsitaDeEspera;
     private LinkedList<Reserva> reservas;
     public LinkedList<Mesa> mesas;
 
-    public Restaurante(LinkedList<String> lsitaDeEspera, LinkedList<Reserva> reservas, LinkedList<Mesa> mesas) {
+    public Restaurante(LinkedList<PropietarioReserva> lsitaDeEspera, LinkedList<Reserva> reservas, LinkedList<Mesa> mesas) {
         this.lsitaDeEspera = lsitaDeEspera;
         this.reservas = reservas;
         this.mesas = mesas;
     }
 
-    public void addProprietarioReservaListaEspera(String proprietarioReserva) {
+    public void addProprietarioReservaListaEspera(PropietarioReserva proprietarioReserva) {
         this.lsitaDeEspera.add(proprietarioReserva);
     }
-    public void removerProprietarioReservaListaEspera(String proprietarioReserva){
+
+    public void removerProprietarioReservaListaEspera(PropietarioReserva proprietarioReserva){
         this.lsitaDeEspera.remove(proprietarioReserva);
     }
+
     public void addMesa(Mesa mesa) {
         this.mesas.add(mesa);
+    }
+
+    public void addReserva(PropietarioReserva propietarioReserva, Mesa mesa) {
+        this.reservas.add( new Reserva(propietarioReserva, mesa));
+        mesa.ocuparMesa();
+    }
+
+    public int qtdReservasAtuais(){
+        return this.reservas.size();
+    }
+    public Reserva getReserva(int indiceReserva){
+        return this.reservas.get(indiceReserva);
+    }
+    public void encerrarReserva(Reserva reserva){
+        reserva.encerrar();
+        this.reservas.remove(reserva);
+    }
+
+    public void exibirReservas(){
+        int indice = 1;
+        for(Reserva res : this.reservas){
+            System.out.println(indice + " - Reserva: " + res.getNomePropietario() + " - " + res.getCapacidadeMesa() + " lugares");
+            indice++;
+        }
     }
     public void verificarDisponibilidade(){
         for (Mesa mesa : this.mesas) {

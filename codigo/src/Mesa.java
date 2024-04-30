@@ -10,9 +10,8 @@ public class Mesa {
     public boolean verificarCapacidade(int totalDePessoas){
         return totalDePessoas <= capacidade;
     }
-    public boolean verificarDisponibilidade(){
-        return disponibilidade;
-    }
+
+    public boolean verificarDisponibilidade(){ return disponibilidade; }
 
     public void ocuparMesa(){
         disponibilidade = false;

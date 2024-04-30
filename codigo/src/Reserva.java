@@ -9,13 +9,11 @@ public class Reserva {
     public Reserva(PropietarioReserva propietarioReserva, Mesa mesa){
         this.propietarioReserva = propietarioReserva;
         this.mesa = mesa;
-    }
-
-    public void registrarEntrada() {
         this.horaChegada = LocalDateTime.now();
     }
 
-    public void registrarSaida() {
+    public void encerrar() {
+        this.mesa.desocuparMesa();
         this.horaSaida = LocalDateTime.now();
     }
 
@@ -25,5 +23,13 @@ public class Reserva {
 
     public LocalDateTime getHoraSaida() {
         return this.horaSaida;
+    }
+
+    public String getNomePropietario(){
+        return this.propietarioReserva.getNome();
+    }
+
+    public int getCapacidadeMesa(){
+        return this.mesa.exibirCapacidade();
     }
 }
