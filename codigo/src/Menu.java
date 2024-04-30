@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.Scanner;
 //===============================================================
 public class Menu {
-    public static Restaurante restaurante = new Restaurante(new LinkedList<String>(), new LinkedList<Reserva>(), new LinkedList<Mesa>());
+    public static Restaurante restaurante = new Restaurante(new LinkedList<PropietarioReserva>(), new LinkedList<Reserva>(), new LinkedList<Mesa>());
 
     public void exibirMenu() {
         Scanner scanner = new Scanner(System.in);
@@ -29,7 +29,7 @@ public class Menu {
             switch (opcao) {
                 case 1:
                     System.out.println("Nova reserva");
-                    realizarNovaReserva(restaurante.mesas.get(0));
+                    novaReserva();
                     break;
                 case 2:
                     System.out.println("Disponibilidade da mesa");
@@ -37,7 +37,7 @@ public class Menu {
                     break;
                 case 3:
                     System.out.println("Remover reserva");
-
+                    encerrarReserva();
                     break;
                 case 4:
                     System.out.println("Finalizando o expediente, até logo!");
@@ -62,7 +62,7 @@ public class Menu {
         }
     }
 
-    public static void realizarNovaReserva(Mesa mesa){
+    public static void novaReserva(){
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Digite o nome do cliente");
@@ -78,9 +78,66 @@ public class Menu {
         int numPessoas = scanner.nextInt();
 
         PropietarioReserva propietarioReserva = new PropietarioReserva(nome, telefone,numPessoas,cpf);
+        LinkedList<Mesa> mesasDisponiveis = verificarMesasDisponiveis(numPessoas);
 
-        Reserva reserva = new Reserva(propietarioReserva, mesa);
-        reserva.fazerReserva();
+        if(!mesasDisponiveis.isEmpty()){
+            System.out.println("Mesas disponiveis:");
+            for (int i = 0; i < mesasDisponiveis.size(); i++) {
+                System.out.println(i+1 + " - mesa com: " + mesasDisponiveis.get(i).exibirCapacidade());
+            }
+            int mesaSelecionada = scanner.nextInt();
+            restaurante.addReserva(propietarioReserva, mesasDisponiveis.get(mesaSelecionada-1));
+
+            System.out.println("Reserva feita com sucesso!");
+
+        } else {
+            System.out.println("Nao temos mesas disponiveis no momento");
+            addListaDeEspera(propietarioReserva);
+        }
+
+    }
+
+    public static void encerrarReserva(){
+        if(restaurante.qtdReservasAtuais() > 0) {
+            Scanner scanner = new Scanner(System.in);
+
+            System.out.println("\nSelecione qual reserva sera encerrada:\n");
+
+            System.out.println("------Reservas------");
+            restaurante.exibirReservas();
+
+            int opcao = scanner.nextInt();
+
+            restaurante.encerrarReserva(restaurante.getReserva(opcao-1));
+            System.out.println("Reserva encerrada com sucesso!");
+        } else {
+            System.out.println("Nao temos nenhuma reserva no momento");
+        }
+    }
+
+    public static void addListaDeEspera(PropietarioReserva propietarioReserva){
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Gostaria de adicinoar a lista de espera?");
+        System.out.println("1 - Sim");
+        System.out.println("2 - Não");
+        String opcao = scanner.nextLine();
+
+        if(opcao.equals("1")){
+            restaurante.addProprietarioReservaListaEspera(propietarioReserva);
+            System.out.println("Cliente adicionado com sucesso!");
+        }
+
+    }
+
+    public static LinkedList<Mesa> verificarMesasDisponiveis(int totalDePessoas){
+        LinkedList<Mesa> mesasDisponiveis = new LinkedList<>();
+        restaurante.mesas.forEach(mesa -> {
+            if(mesa.verificarCapacidade(totalDePessoas) && mesa.verificarDisponibilidade()){
+                mesasDisponiveis.add(mesa);
+            }
+        });
+        return mesasDisponiveis;
     }
 
     public static void criarMesas(){
