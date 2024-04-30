@@ -108,8 +108,14 @@ public class Menu {
 
             int opcao = scanner.nextInt();
 
-            restaurante.encerrarReserva(restaurante.getReserva(opcao-1));
+            Reserva reservaEncerrada = restaurante.getReserva(opcao-1);
+
+            restaurante.encerrarReserva(reservaEncerrada);
+
             System.out.println("Reserva encerrada com sucesso!");
+            System.out.println("Hora de chegada: " + reservaEncerrada.getHoraEntrada());
+            System.out.println("Hora de saída: " + reservaEncerrada.getHoraSaida());
+
         } else {
             System.out.println("Nao temos nenhuma reserva no momento");
         }
