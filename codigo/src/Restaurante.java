@@ -46,6 +46,13 @@ public class Restaurante {
             indice++;
         }
     }
+    public void exibirListaDeEspera(){
+        int indice = 1;
+        for(PropietarioReserva cliente : this.lsitaDeEspera){
+            System.out.println(indice + " - Cliente: " + cliente.getNome() + " - Telefone: " + cliente.getTelefone());
+            indice++;
+        }
+    }
     public void verificarDisponibilidade(){
         for (Mesa mesa : this.mesas) {
             if(mesa.verificarDisponibilidade()){

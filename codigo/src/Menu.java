@@ -18,7 +18,8 @@ public class Menu {
             System.out.println("1) Nova reserva");
             System.out.println("2) Disponibilidade da mesa");
             System.out.println("3) Remover reserva");
-            System.out.println("4) Sair");
+            System.out.println("4) Lista de espera");
+            System.out.println("5) Sair");
             System.out.print("Escolha uma opção: ");
             
             opcao = scanner.nextInt();
@@ -40,14 +41,23 @@ public class Menu {
                     encerrarReserva();
                     break;
                 case 4:
-                    System.out.println("Finalizando o expediente, até logo!");
+                    System.out.println("Lista de espera");
+                    exibirListaDeEspera();
                     break;
+                case 5:
+                System.out.println("Finalizando o expediente, até logo!");
+                break;
                 default:
                     System.out.println("Opção inválida. Por favor, escolha novamente.");
             }
-        } while (opcao != 4);
+        } while (opcao != 5);
 
         scanner.close();
+    }
+
+    public void exibirListaDeEspera() {
+        restaurante.exibirListaDeEspera();
+        System.out.println("\n\n");
     }
 
     public static void limparTela() {
