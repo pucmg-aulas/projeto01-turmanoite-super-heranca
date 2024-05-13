@@ -1,25 +1,22 @@
-public class Mesa {
-    private int capacidade;
-    private boolean disponibilidade;
+public class Produto {
+    private String nome;
+    private double preco;
+    private String descricao;
 
-    public Mesa(int capacidade, boolean disponibilidade) {
-        this.capacidade = capacidade;
-        this.disponibilidade = disponibilidade;
+    // Construtor
+    public Produto(String nome, double preco, String descricao) {
+        this.nome = nome;
+        this.preco = preco;
+        this.descricao = descricao;
     }
 
-    public boolean verificarCapacidade(int totalDePessoas){
-        return totalDePessoas <= capacidade;
+    // Método para adicionar um produto
+    public void adicionarProduto(Produto produto) {
+        // Implemente a lógica para adicionar um produto
     }
 
-    public boolean verificarDisponibilidade(){ return disponibilidade; }
-
-    public void ocuparMesa(){
-        disponibilidade = false;
+    // Método para remover um produto
+    public void removerProduto(Produto produto) {
+        // Implemente a lógica para remover um produto
     }
-
-    public void desocuparMesa(){
-        disponibilidade = true;
-    }
-
-    public int exibirCapacidade(){ return this.capacidade;}
-}
+{
