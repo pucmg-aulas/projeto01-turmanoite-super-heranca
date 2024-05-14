@@ -4,11 +4,13 @@ public class Restaurante {
     private LinkedList<PropietarioReserva> lsitaDeEspera;
     private LinkedList<Reserva> reservas;
     public LinkedList<Mesa> mesas;
+    public LinkedList<Produto> produtos;
 
-    public Restaurante(LinkedList<PropietarioReserva> lsitaDeEspera, LinkedList<Reserva> reservas, LinkedList<Mesa> mesas) {
+    public Restaurante(LinkedList<PropietarioReserva> lsitaDeEspera, LinkedList<Reserva> reservas, LinkedList<Mesa> mesas, LinkedList<Produto> produtos) {
         this.lsitaDeEspera = lsitaDeEspera;
         this.reservas = reservas;
         this.mesas = mesas;
+        this.produtos = produtos;
     }
 
     public void addProprietarioReservaListaEspera(PropietarioReserva proprietarioReserva) {
@@ -23,6 +25,14 @@ public class Restaurante {
         this.mesas.add(mesa);
     }
 
+    public void addProduto(Produto produto){
+        this.produtos.add(produto);
+    }
+
+    public void removerProduto(Produto produto){
+        this.produtos.remove(produto);
+    }
+
     public void addReserva(PropietarioReserva propietarioReserva, Mesa mesa) {
         this.reservas.add( new Reserva(propietarioReserva, mesa));
         mesa.ocuparMesa();
@@ -31,9 +41,11 @@ public class Restaurante {
     public int qtdReservasAtuais(){
         return this.reservas.size();
     }
+
     public Reserva getReserva(int indiceReserva){
         return this.reservas.get(indiceReserva);
     }
+
     public void encerrarReserva(Reserva reserva){
         reserva.encerrar();
         this.reservas.remove(reserva);
@@ -46,6 +58,7 @@ public class Restaurante {
             indice++;
         }
     }
+
     public void exibirListaDeEspera(){
         int indice = 1;
         for(PropietarioReserva cliente : this.lsitaDeEspera){
@@ -53,6 +66,7 @@ public class Restaurante {
             indice++;
         }
     }
+
     public void verificarDisponibilidade(){
         for (Mesa mesa : this.mesas) {
             if(mesa.verificarDisponibilidade()){
