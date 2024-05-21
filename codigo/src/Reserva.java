@@ -41,4 +41,9 @@ public class Reserva {
     public int getCapacidadeMesa() {
         return this.mesa.exibirCapacidade();
     }
+
+    // Método getter para obter o proprietário da reserva
+    public PropietarioReserva getPropietarioReserva() {
+        return this.propietarioReserva;
+    }
 }

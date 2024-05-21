@@ -217,12 +217,17 @@ public class Menu {
 
         if (!mesaSelecionada.verificarDisponibilidade()) {
             exibirCardapio();
-            System.out.println("Digite o número do produto que deseja adicionar ao pedido:");
-            int indiceProduto = scanner.nextInt() - 1;
-            Produto produtoSelecionado = restaurante.getProdutos().get(indiceProduto);
-            mesaSelecionada.adicionarPedido(produtoSelecionado);
+            String opcao;
+            do {
+                System.out.println("Digite o número do produto que deseja adicionar ao pedido:");
+                int indiceProduto = scanner.nextInt() - 1;
+                Produto produtoSelecionado = restaurante.getProdutos().get(indiceProduto);
+                mesaSelecionada.adicionarPedido(produtoSelecionado);
 
-            System.out.println("Produto adicionado ao pedido.");
+                System.out.println("Produto adicionado ao pedido.");
+                System.out.println("Deseja adicionar mais um produto? (s/n)");
+                opcao = scanner.next();
+            } while (opcao.equalsIgnoreCase("s"));
         } else {
             System.out.println("Mesa não está reservada.");
         }

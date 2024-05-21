@@ -4,13 +4,13 @@ import java.util.List;
 public class Comanda {
     // Lista de produtos pedidos na comanda
     private List<Produto> produtos;
-    
-    // Mesa associada à comanda
-    private Mesa mesa;
 
-    // Construtor que inicializa a comanda com uma mesa e uma lista de produtos vazia
-    public Comanda(Mesa mesa) {
-        this.mesa = mesa;
+    // Reserva associada à comanda
+    private Reserva reserva;
+
+    // Construtor que inicializa a comanda com uma reserva e uma lista de produtos vazia
+    public Comanda(Reserva reserva) {
+        this.reserva = reserva;
         this.produtos = new ArrayList<>();
     }
 
@@ -34,15 +34,15 @@ public class Comanda {
         return subtotal + taxaServico; // Retorna o total incluindo a taxa de serviço
     }
 
-    // Método para dividir o total da conta pelo número de pessoas na mesa
+    // Método para dividir o total da conta pelo número de pessoas na reserva
     public double dividirConta() {
         double total = calcularTotal();
-        return total / mesa.exibirCapacidade(); // Divide o total pelo número de pessoas na mesa
+        return total / reserva.getPropietarioReserva().getTotalPessoas(); // Divide o total pelo número de pessoas na reserva
     }
 
     // Método para exibir a conta detalhada no console
     public void exibirConta() {
-        System.out.println("Conta da mesa com capacidade para " + mesa.exibirCapacidade() + " pessoas:");
+        System.out.println("Conta da reserva de " + reserva.getNomePropietario() + " com capacidade para " + reserva.getPropietarioReserva().getTotalPessoas() + " pessoas:");
         for (Produto produto : produtos) {
             System.out.println(produto.getNome() + " - R$" + produto.getPreco()); // Exibe cada produto com seu preço
         }
@@ -64,11 +64,11 @@ public class Comanda {
         this.produtos = produtos;
     }
 
-    public Mesa getMesa() {
-        return mesa;
+    public Reserva getReserva() {
+        return reserva;
     }
 
-    public void setMesa(Mesa mesa) {
-        this.mesa = mesa;
+    public void setReserva(Reserva reserva) {
+        this.reserva = reserva;
     }
 }
