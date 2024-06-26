@@ -4,8 +4,6 @@ import Dao.ListaEspera;
 import views.NovaReserva;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import model.ClienteListaEspera;
 import model.Mesa;
@@ -79,7 +77,7 @@ public class NovaReservaController {
     public LinkedList<Mesa> buscarMesasDisponiveis(int qtdPessoas) {
         LinkedList<Mesa> mesasDisponiveis = new LinkedList<>();
         this.mesas.getAllMesas().forEach(mesa -> {
-            if (mesa.getCapacidade() >= qtdPessoas && mesa.getDisponibilidade()) {
+            if (mesa.getCapacidade() >= qtdPessoas && mesa.isDisponivel()) {
                 mesasDisponiveis.push(mesa);
             }
         });
@@ -106,7 +104,7 @@ public class NovaReservaController {
 
             int idMesa = Integer.parseInt((String) this.view.getTableMesasDisponiveis().getValueAt(rowIndex, 0));
             Mesa mesa = buscarMesaPorId(idMesa);
-            mesa.setDisponibilidade(false); // Marca a mesa como ocupada
+            mesa.setDisponivel(false); // Marca a mesa como ocupada
             mesa.setHoraEntrada(LocalDateTime.now());
 
             ProprietarioReserva proprietario = new ProprietarioReserva(nome, telefone, totalPessoas, cpf);
@@ -133,8 +131,7 @@ public class NovaReservaController {
             tableModel.addRow(new String[]{String.valueOf(mesa.getId()), String.valueOf(mesa.getCapacidade()), mesa.getDescricao()});
         });
 
-        JTable tabelaMesas = this.view.getTableMesasDisponiveis();
-        tabelaMesas.setModel(tableModel);
+        this.view.getTableMesasDisponiveis().setModel(tableModel);
     }
 
     public Mesa buscarMesaPorId(int id) {

@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 public class Mesa implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
     private int id;
     private int capacidade;
     private boolean disponibilidade;
@@ -26,11 +28,11 @@ public class Mesa implements Serializable {
         return capacidade;
     }
 
-    public boolean getDisponibilidade() {
+    public boolean isDisponivel() {
         return disponibilidade;
     }
 
-    public void setDisponibilidade(boolean disponibilidade) {
+    public void setDisponivel(boolean disponibilidade) {
         this.disponibilidade = disponibilidade;
     }
 
@@ -52,5 +54,9 @@ public class Mesa implements Serializable {
 
     public void setHoraSaida(LocalDateTime horaSaida) {
         this.horaSaida = horaSaida;
+    }
+
+    public String getDisponibilidade() {
+        return disponibilidade ? "Desocupada" : "Ocupada";
     }
 }

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Comanda implements Serializable {
+    private static final long serialVersionUID = 1L; // Adicione um serialVersionUID
+
     private List<Prato> pratos;
     private List<Bebida> bebidas;
 

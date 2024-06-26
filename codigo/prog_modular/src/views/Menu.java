@@ -3,10 +3,11 @@ package views;
 import controller.AdicionarMesaController;
 import controller.ListaEsperaController;
 import controller.NovaReservaController;
+import controller.GerenciarReservaController;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
-import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.BorderLayout;
 import java.awt.GridBagLayout;
@@ -55,12 +56,12 @@ public class Menu {
         frame.getContentPane().add(panel, BorderLayout.CENTER);
         GridBagLayout gbl_panel = new GridBagLayout();
         gbl_panel.columnWidths = new int[]{0, 0};
-        gbl_panel.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
+        gbl_panel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
         gbl_panel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-        gbl_panel.rowWeights = new double[]{1.0, 0.0, 0.0, 0.0, 0.0, 1.0};
+        gbl_panel.rowWeights = new double[]{1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0};
         panel.setLayout(gbl_panel);
         
-        JButton btnReserva = new JButton("Reserva");
+        JButton btnReserva = new JButton("Realizar Reserva");
         btnReserva.setFont(new Font("Tahoma", Font.PLAIN, 14));
         btnReserva.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -74,7 +75,7 @@ public class Menu {
         gbc_btnReserva.fill = GridBagConstraints.HORIZONTAL;
         panel.add(btnReserva, gbc_btnReserva);
         
-        JButton btnListaEspera = new JButton("Lista de Espera");
+        JButton btnListaEspera = new JButton("Gerenciar Lista de Espera");
         btnListaEspera.setFont(new Font("Tahoma", Font.PLAIN, 14));
         btnListaEspera.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -87,8 +88,8 @@ public class Menu {
         gbc_btnListaEspera.gridy = 2;
         gbc_btnListaEspera.fill = GridBagConstraints.HORIZONTAL;
         panel.add(btnListaEspera, gbc_btnListaEspera);
-        
-        JButton btnProdutos = new JButton("Produtos");
+
+        JButton btnProdutos = new JButton("Gerenciar Cardápio");
         btnProdutos.setFont(new Font("Tahoma", Font.PLAIN, 14));
         GridBagConstraints gbc_btnProdutos = new GridBagConstraints();
         gbc_btnProdutos.insets = new Insets(5, 10, 5, 10);
@@ -96,7 +97,7 @@ public class Menu {
         gbc_btnProdutos.gridy = 3;
         gbc_btnProdutos.fill = GridBagConstraints.HORIZONTAL;
         panel.add(btnProdutos, gbc_btnProdutos);
-        
+
         JButton btnMesas = new JButton("Gerenciar Mesas");
         btnMesas.setFont(new Font("Tahoma", Font.PLAIN, 14));
         btnMesas.addActionListener(new ActionListener() {
@@ -110,7 +111,21 @@ public class Menu {
         gbc_btnMesas.gridy = 4;
         gbc_btnMesas.fill = GridBagConstraints.HORIZONTAL;
         panel.add(btnMesas, gbc_btnMesas);
-        
+
+        JButton btnReservas = new JButton("Gerenciar Reservas");
+        btnReservas.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        btnReservas.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new GerenciarReservaController();
+            }
+        });
+        GridBagConstraints gbc_btnReservas = new GridBagConstraints();
+        gbc_btnReservas.insets = new Insets(5, 10, 5, 10);
+        gbc_btnReservas.gridx = 0;
+        gbc_btnReservas.gridy = 5;
+        gbc_btnReservas.fill = GridBagConstraints.HORIZONTAL;
+        panel.add(btnReservas, gbc_btnReservas);
+
         JButton btnSair = new JButton("Sair");
         btnSair.setFont(new Font("Tahoma", Font.PLAIN, 14));
         btnSair.addActionListener(new ActionListener() {
@@ -121,9 +136,8 @@ public class Menu {
         GridBagConstraints gbc_btnSair = new GridBagConstraints();
         gbc_btnSair.insets = new Insets(5, 10, 10, 10);
         gbc_btnSair.gridx = 0;
-        gbc_btnSair.gridy = 5;
+        gbc_btnSair.gridy = 6;
         gbc_btnSair.fill = GridBagConstraints.HORIZONTAL;
         panel.add(btnSair, gbc_btnSair);
     }
 }
-

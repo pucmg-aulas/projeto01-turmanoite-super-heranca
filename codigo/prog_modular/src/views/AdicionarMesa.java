@@ -92,7 +92,7 @@ public class AdicionarMesa extends javax.swing.JFrame {
         tableMesas = new JTable();
         tableMesas.setModel(new DefaultTableModel(
             new Object[][] {},
-            new String[] {"ID", "Capacidade", "Descrição"}
+            new String[] {"ID", "Capacidade", "Descrição", "Status"}
         ));
         JScrollPane scrollPane = new JScrollPane(tableMesas);
 

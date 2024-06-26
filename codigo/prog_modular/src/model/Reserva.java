@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 public class Reserva implements Serializable {
+    private static final long serialVersionUID = 1L; // Adicione um serialVersionUID
+
     private ProprietarioReserva proprietario;
     private Mesa mesa;
     private Comanda comanda;

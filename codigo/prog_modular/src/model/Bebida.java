@@ -3,6 +3,8 @@ package model;
 import java.io.Serializable;
 
 public class Bebida implements Serializable {
+    private static final long serialVersionUID = 1L; // Adicione um serialVersionUID
+
     private String nome;
     private double preco;
 

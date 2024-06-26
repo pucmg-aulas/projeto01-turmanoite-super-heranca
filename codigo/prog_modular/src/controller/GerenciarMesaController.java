@@ -1,18 +1,19 @@
 package controller;
 
 import Dao.Mesas;
+import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Mesa;
 import views.AdicionarMesa;
 
-public class AdicionarMesaController {
+public class GerenciarMesaController {
 
     private AdicionarMesa view;
     private Mesas mesas;
 
-    public AdicionarMesaController() {
+    public GerenciarMesaController() {
         this.mesas = Mesas.getInstance();
         this.view = new AdicionarMesa();
         this.view.setVisible(true);
@@ -51,7 +52,7 @@ public class AdicionarMesaController {
         tableModel.setRowCount(0); // Limpa a tabela
 
         for (Mesa mesa : mesas.getAllMesas()) {
-            Object[] row = { mesa.getId(), mesa.getCapacidade(), mesa.getDescricao(), mesa.getDisponibilidade() };
+            Object[] row = { mesa.getId(), mesa.getCapacidade(), mesa.getDescricao() };
             tableModel.addRow(row);
         }
     }

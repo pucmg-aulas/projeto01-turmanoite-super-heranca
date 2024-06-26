@@ -7,6 +7,8 @@ import model.Mesa;
 
 public class Mesas extends AbstractDAO implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+    
     private List<Mesa> mesas;
     private static Mesas instance;
 
@@ -51,7 +53,7 @@ public class Mesas extends AbstractDAO implements Serializable {
         return mesas.size() + 1;
     }
 
-    private void grava() {
+    public void grava() {
         super.grava(localArquivo, mesas);
     }
 
