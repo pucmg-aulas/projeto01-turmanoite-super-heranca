@@ -1,5 +1,6 @@
 package views;
 
+import controller.AdicionarMesaController;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -72,7 +73,12 @@ public class Menu {
 		JButton btnProdutos = new JButton("Produtos");
 		toolBar.add(btnProdutos);
 		
-		JButton btnMesas = new JButton("Mesas");
+		JButton btnMesas = new JButton("Mesas");          
+		btnMesas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new AdicionarMesaController();
+			}
+		});
 		toolBar.add(btnMesas);
 		
 		JButton btnSair = new JButton("Sair");
