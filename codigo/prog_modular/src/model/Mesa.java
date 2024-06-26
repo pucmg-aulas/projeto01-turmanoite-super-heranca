@@ -1,12 +1,13 @@
 package model;
 
-public class Mesa {
-	private int id;
+import java.io.Serializable;
+
+public class Mesa implements Serializable {
 	private int capacidade;
 	private boolean disponibilidade;
 	private String descricao;
 	
-	public Mesa(int id, int capacidade, String descricao) {
+	public Mesa(int capacidade, String descricao) {
 		this.capacidade = capacidade;
 		this.disponibilidade = false;
 		this.descricao = descricao;
@@ -22,9 +23,6 @@ public class Mesa {
 	
 	public String getDescricao() {
 		return this.descricao;
-	}
-	public int getId() {
-		return this.id;
 	}
 
 }

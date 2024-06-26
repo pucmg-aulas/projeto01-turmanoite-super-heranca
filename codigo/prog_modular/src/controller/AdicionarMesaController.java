@@ -4,8 +4,12 @@
  */
 package controller;
 
+import Dao.Mesas;
 import java.util.LinkedList;
+import java.util.List;
+import javax.swing.JOptionPane;
 import model.Mesa;
+import views.AdicionarMesa;
 
 /**
  *
@@ -13,23 +17,21 @@ import model.Mesa;
  */
 public class AdicionarMesaController {
     
-    private AdicionarMesaController view;
-    private LinkedList<Mesa> mesas;
+    private AdicionarMesa view;
+    private Mesas mesas;
     
-    public adicionarMesaController {
-        this.mesas = Carros.getInstance();
+    public AdicionarMesaController() {
+        this.mesas = Mesas.getInstance();
         this.view = new AdicionarMesa();
+        this.view.setVisible(true);
         
         this.view.getBtnSalvar().addActionListener((e) -> {
             addMesa();
-        
+        });
         this.view.getBtnCancelar().addActionListener((e) -> {
             cancelar();
         });
-        
-        this.view.setTxtTitle("Cadastrar Mesa");
-      
-        });
+             
 }
     
     public void addMesa(){
@@ -39,7 +41,7 @@ public class AdicionarMesaController {
         
         Mesa m = new Mesa(numAssento, descricao);
         
-        mesa.addMesa(m);
+        this.mesas.addMesas(m);
         
         JOptionPane.showMessageDialog(view, "Mesa salva com sucesso!");
         
