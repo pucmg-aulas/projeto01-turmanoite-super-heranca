@@ -2,107 +2,157 @@ package controller;
 
 import Dao.Mesas;
 import Dao.Reservas;
-import model.Mesa;
 import model.Reserva;
+import model.Mesa;
+import model.Prato;
+import model.Bebida;
 import views.GerenciarReservaView;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class GerenciarReservaController {
     private GerenciarReservaView view;
-    private Mesas mesas;
     private Reservas reservas;
+    private Mesas mesas;
 
     public GerenciarReservaController() {
-        this.mesas = Mesas.getInstance();
-        this.reservas = Reservas.getInstance();
         this.view = new GerenciarReservaView();
-        this.view.setVisible(true);
-
-        carregarMesasNaTabela();
-
-        this.view.getBtnSelecionar().addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                selecionarMesa();
-            }
-        });
-
-        this.view.getBtnAddPrato().addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                adicionarPrato();
-            }
-        });
-
-        this.view.getBtnAddBebida().addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                adicionarBebida();
-            }
-        });
-
-        this.view.getBtnEncerrar().addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                encerrarPedido();
-            }
-        });
+        this.reservas = Reservas.getInstance();
+        this.mesas = Mesas.getInstance();
+        initController();
+        carregarReservasNaTabela();
     }
 
-    private void carregarMesasNaTabela() {
-        DefaultTableModel tableModel = (DefaultTableModel) this.view.getTableMesas().getModel();
-        tableModel.setRowCount(0); // Limpa a tabela
+    private void initController() {
+        this.view.getBtnAdicionarPrato().addActionListener(e -> adicionarPrato());
+        this.view.getBtnAdicionarBebida().addActionListener(e -> adicionarBebida());
+        this.view.getBtnRemoverItem().addActionListener(e -> removerItem());
+        this.view.getBtnFinalizarReserva().addActionListener(e -> finalizarReserva());
+        this.view.getTableReservas().getSelectionModel().addListSelectionListener(e -> carregarItensDaReserva());
+        this.view.setVisible(true);
+    }
 
-        for (Mesa mesa : mesas.getAllMesas()) {
-            if (!mesa.isDisponivel()) { // Mostra apenas mesas ocupadas
-                Object[] row = { mesa.getId(), mesa.getCapacidade(), mesa.getDescricao(), "Ocupada" };
-                tableModel.addRow(row);
+    private void carregarReservasNaTabela() {
+        DefaultTableModel model = (DefaultTableModel) this.view.getTableReservas().getModel();
+        model.setRowCount(0); // Limpa a tabela
+        for (Reserva reserva : reservas.getReservas()) {
+            if (!reserva.getMesa().isDisponivel()) {
+                model.addRow(new Object[]{
+                    reserva.getProprietario().getNome(),
+                    reserva.getMesa().getId(),
+                    reserva.getDataHora().toString()
+                });
             }
         }
     }
 
-    private void selecionarMesa() {
-        int selectedRow = this.view.getTableMesas().getSelectedRow();
+    private void carregarItensDaReserva() {
+        int selectedRow = this.view.getTableReservas().getSelectedRow();
         if (selectedRow >= 0) {
-            int mesaId = (int) this.view.getTableMesas().getValueAt(selectedRow, 0);
-            Mesa mesa = mesas.getMesaById(mesaId);
-            this.view.setMesaSelecionada(mesa);
-            JOptionPane.showMessageDialog(view, "Mesa " + mesaId + " selecionada.");
-        } else {
-            JOptionPane.showMessageDialog(view, "Por favor, selecione uma mesa.");
+            String nomeCliente = (String) this.view.getTableReservas().getValueAt(selectedRow, 0);
+            Reserva reserva = reservas.getReservaPorNomeCliente(nomeCliente);
+            DefaultTableModel model = (DefaultTableModel) this.view.getTableItens().getModel();
+            model.setRowCount(0); // Limpa a tabela
+            for (var prato : reserva.getComanda().getPratos()) {
+                model.addRow(new Object[]{prato.getNome(), "Prato", prato.getPreco()});
+            }
+            for (var bebida : reserva.getComanda().getBebidas()) {
+                model.addRow(new Object[]{bebida.getNome(), "Bebida", bebida.getPreco()});
+            }
         }
     }
 
     private void adicionarPrato() {
-        Mesa mesaSelecionada = this.view.getMesaSelecionada();
-        if (mesaSelecionada != null) {
-            String prato = JOptionPane.showInputDialog("Digite o nome do prato:");
-            // Adicione o prato à comanda da reserva
+        int selectedRow = this.view.getTableReservas().getSelectedRow();
+        if (selectedRow >= 0) {
+            String nomeCliente = (String) this.view.getTableReservas().getValueAt(selectedRow, 0);
+            Reserva reserva = reservas.getReservaPorNomeCliente(nomeCliente);
+
+            String[] pratos = {"Moqueca de Tilápia", "Falafel Assado", "Salada Primavera com Macarrão Konjac", "Escondidinho de Frango", "Strogonoff", "Caçarola de carne com legumes"};
+            double[] precos = {45.00, 30.00, 25.00, 35.00, 40.00, 50.00};
+            String pratoEscolhido = (String) JOptionPane.showInputDialog(view, "Escolha o prato:", "Adicionar Prato", JOptionPane.QUESTION_MESSAGE, null, pratos, pratos[0]);
+
+            if (pratoEscolhido != null) {
+                for (int i = 0; i < pratos.length; i++) {
+                    if (pratoEscolhido.equals(pratos[i])) {
+                        Prato prato = new Prato(pratoEscolhido, precos[i]);
+                        reserva.getComanda().addPrato(prato);
+                        break;
+                    }
+                }
+            }
+
+            carregarItensDaReserva();
+            reservas.grava();
         } else {
-            JOptionPane.showMessageDialog(view, "Por favor, selecione uma mesa primeiro.");
+            JOptionPane.showMessageDialog(view, "Por favor, selecione uma reserva primeiro.");
         }
     }
 
     private void adicionarBebida() {
-        Mesa mesaSelecionada = this.view.getMesaSelecionada();
-        if (mesaSelecionada != null) {
-            String bebida = JOptionPane.showInputDialog("Digite o nome da bebida:");
-            // Adicione a bebida à comanda da reserva
+        int selectedRow = this.view.getTableReservas().getSelectedRow();
+        if (selectedRow >= 0) {
+            String nomeCliente = (String) this.view.getTableReservas().getValueAt(selectedRow, 0);
+            Reserva reserva = reservas.getReservaPorNomeCliente(nomeCliente);
+
+            String[] bebidas = {"Água", "Suco", "Refrigerante", "Cerveja", "Taça de vinho"};
+            double[] precos = {5.00, 10.00, 7.00, 12.00, 15.00};
+            String bebidaEscolhida = (String) JOptionPane.showInputDialog(view, "Escolha a bebida:", "Adicionar Bebida", JOptionPane.QUESTION_MESSAGE, null, bebidas, bebidas[0]);
+
+            if (bebidaEscolhida != null) {
+                for (int i = 0; i < bebidas.length; i++) {
+                    if (bebidaEscolhida.equals(bebidas[i])) {
+                        Bebida bebida = new Bebida(bebidaEscolhida, precos[i]);
+                        reserva.getComanda().addBebida(bebida);
+                        break;
+                    }
+                }
+            }
+
+            carregarItensDaReserva();
+            reservas.grava();
         } else {
-            JOptionPane.showMessageDialog(view, "Por favor, selecione uma mesa primeiro.");
+            JOptionPane.showMessageDialog(view, "Por favor, selecione uma reserva primeiro.");
         }
     }
 
-    private void encerrarPedido() {
-        Mesa mesaSelecionada = this.view.getMesaSelecionada();
-        if (mesaSelecionada != null) {
-            // Calcular o total com taxa e mostrar a mensagem
-            mesaSelecionada.setDisponivel(true); // Marca a mesa como desocupada
-            mesas.grava(); // Atualiza o estado das mesas
-            carregarMesasNaTabela(); // Atualiza a tabela
-            JOptionPane.showMessageDialog(view, "Pedido encerrado e mesa desocupada.");
+    private void removerItem() {
+        int selectedRow = this.view.getTableItens().getSelectedRow();
+        if (selectedRow >= 0) {
+            String itemNome = (String) this.view.getTableItens().getValueAt(selectedRow, 0);
+            String itemTipo = (String) this.view.getTableItens().getValueAt(selectedRow, 1);
+            int reservaRow = this.view.getTableReservas().getSelectedRow();
+            String nomeCliente = (String) this.view.getTableReservas().getValueAt(reservaRow, 0);
+            Reserva reserva = reservas.getReservaPorNomeCliente(nomeCliente);
+
+            if (itemTipo.equals("Prato")) {
+                reserva.getComanda().removePrato(itemNome);
+            } else if (itemTipo.equals("Bebida")) {
+                reserva.getComanda().removeBebida(itemNome);
+            }
+
+            carregarItensDaReserva();
+            reservas.grava();
         } else {
-            JOptionPane.showMessageDialog(view, "Por favor, selecione uma mesa primeiro.");
+            JOptionPane.showMessageDialog(view, "Por favor, selecione um item para remover.");
+        }
+    }
+
+    private void finalizarReserva() {
+        int selectedRow = this.view.getTableReservas().getSelectedRow();
+        if (selectedRow >= 0) {
+            String nomeCliente = (String) this.view.getTableReservas().getValueAt(selectedRow, 0);
+            Reserva reserva = reservas.getReservaPorNomeCliente(nomeCliente);
+            Mesa mesa = reserva.getMesa();
+
+            mesa.setDisponivel(true); // Marca a mesa como desocupada
+            reservas.removeReserva(reserva);
+            mesas.grava();
+
+            JOptionPane.showMessageDialog(view, "Reserva finalizada com sucesso!");
+            carregarReservasNaTabela();
+        } else {
+            JOptionPane.showMessageDialog(view, "Por favor, selecione uma reserva para finalizar.");
         }
     }
 }

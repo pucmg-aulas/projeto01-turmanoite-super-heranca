@@ -4,18 +4,18 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 public class Reserva implements Serializable {
-    private static final long serialVersionUID = 1L; // Adicione um serialVersionUID
-
+    private static final long serialVersionUID = 1L;
+    
     private ProprietarioReserva proprietario;
     private Mesa mesa;
     private Comanda comanda;
-    private LocalDateTime dataHoraReserva;
+    private LocalDateTime dataHora;
 
     public Reserva(ProprietarioReserva proprietario, Mesa mesa) {
         this.proprietario = proprietario;
         this.mesa = mesa;
         this.comanda = new Comanda();
-        this.dataHoraReserva = LocalDateTime.now();
+        this.dataHora = LocalDateTime.now();
     }
 
     public ProprietarioReserva getProprietario() {
@@ -30,7 +30,7 @@ public class Reserva implements Serializable {
         return comanda;
     }
 
-    public LocalDateTime getDataHoraReserva() {
-        return dataHoraReserva;
+    public LocalDateTime getDataHora() {
+        return dataHora;
     }
 }

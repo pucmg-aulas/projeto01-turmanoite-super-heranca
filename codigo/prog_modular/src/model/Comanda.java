@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Comanda implements Serializable {
-    private static final long serialVersionUID = 1L; // Adicione um serialVersionUID
-
     private List<Prato> pratos;
     private List<Bebida> bebidas;
 
@@ -21,6 +19,22 @@ public class Comanda implements Serializable {
 
     public void addBebida(Bebida bebida) {
         bebidas.add(bebida);
+    }
+
+    public List<Prato> getPratos() {
+        return pratos;
+    }
+
+    public List<Bebida> getBebidas() {
+        return bebidas;
+    }
+
+    public void removePrato(String nomePrato) {
+        pratos.removeIf(prato -> prato.getNome().equalsIgnoreCase(nomePrato));
+    }
+
+    public void removeBebida(String nomeBebida) {
+        bebidas.removeIf(bebida -> bebida.getNome().equalsIgnoreCase(nomeBebida));
     }
 
     public double calcularTotal() {

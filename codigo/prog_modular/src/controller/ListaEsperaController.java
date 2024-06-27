@@ -44,8 +44,7 @@ public class ListaEsperaController {
     private void removerCliente() {
         int selectedRow = this.view.getTableClientes().getSelectedRow();
         if (selectedRow >= 0) {
-            int clienteIndex = selectedRow; // Usar o índice da linha selecionada
-            listaEspera.removerClientePorIndex(clienteIndex);
+            listaEspera.removerClientePorIndex(selectedRow);
 
             JOptionPane.showMessageDialog(view, "Cliente removido da lista de espera com sucesso!");
             carregarClientesNaTabela();

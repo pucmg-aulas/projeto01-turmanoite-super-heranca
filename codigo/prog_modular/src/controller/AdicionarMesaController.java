@@ -1,7 +1,6 @@
 package controller;
 
 import Dao.Mesas;
-import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Mesa;
@@ -51,7 +50,8 @@ public class AdicionarMesaController {
         tableModel.setRowCount(0); // Limpa a tabela
 
         for (Mesa mesa : mesas.getAllMesas()) {
-            Object[] row = { mesa.getId(), mesa.getCapacidade(), mesa.getDescricao(), mesa.getDisponibilidade() };
+            String status = mesa.isDisponivel() ? "Desocupada" : "Ocupada";
+            Object[] row = { mesa.getId(), mesa.getCapacidade(), mesa.getDescricao(), status };
             tableModel.addRow(row);
         }
     }

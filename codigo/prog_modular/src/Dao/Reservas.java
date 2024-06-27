@@ -1,14 +1,15 @@
 package Dao;
 
-import model.Reserva;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import model.Reserva;
 
 public class Reservas extends AbstractDAO implements Serializable {
-    private static final long serialVersionUID = 1L;
+
     private List<Reserva> reservas;
     private static Reservas instance;
+
     private final String localArquivo = "./src/data/Reservas.dat";
 
     private Reservas() {
@@ -28,15 +29,33 @@ public class Reservas extends AbstractDAO implements Serializable {
         grava();
     }
 
-    public List<Reserva> getAllReservas() {
-        return this.reservas;
+    public void removeReserva(Reserva reserva) {
+        this.reservas.remove(reserva);
+        grava();
     }
 
-    private void grava() {
+    public Reserva getReservaPorNomeCliente(String nomeCliente) {
+        for (Reserva reserva : reservas) {
+            if (reserva.getProprietario().getNome().equals(nomeCliente)) {
+                return reserva;
+            }
+        }
+        return null;
+    }
+
+    public List<Reserva> getReservas() {
+        return reservas;
+    }
+
+    // Alterar a visibilidade do método grava() para público
+    public void grava() {
         super.grava(localArquivo, reservas);
     }
 
     private void carregaReservas() {
-        this.reservas = super.leitura(localArquivo);
+        List<Reserva> loadedReservas = super.leitura(localArquivo);
+        if (loadedReservas != null) {
+            this.reservas = loadedReservas;
+        }
     }
 }

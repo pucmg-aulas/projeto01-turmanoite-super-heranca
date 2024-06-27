@@ -1,6 +1,8 @@
 package controller;
 
 import Dao.ListaEspera;
+import Dao.Mesas;
+import Dao.Reservas;
 import views.NovaReserva;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
@@ -9,7 +11,6 @@ import model.ClienteListaEspera;
 import model.Mesa;
 import model.Reserva;
 import model.ProprietarioReserva;
-import Dao.Mesas;
 import java.time.LocalDateTime;
 
 public class NovaReservaController {
@@ -17,11 +18,13 @@ public class NovaReservaController {
     private NovaReserva view;
     private Mesas mesas;
     private ListaEspera listaEspera;
+    private Reservas reservas;
 
     public NovaReservaController() {
         this.view = new NovaReserva();
         this.mesas = Mesas.getInstance();
         this.listaEspera = ListaEspera.getInstance();
+        this.reservas = Reservas.getInstance();
 
         carregarMesas();
 
@@ -109,6 +112,7 @@ public class NovaReservaController {
 
             ProprietarioReserva proprietario = new ProprietarioReserva(nome, telefone, totalPessoas, cpf);
             Reserva reserva = new Reserva(proprietario, mesa);
+            reservas.addReserva(reserva); // Adiciona a reserva e salva
 
             JOptionPane.showMessageDialog(null, "Reserva feita com sucesso", "Sucesso", JOptionPane.OK_OPTION);
 
