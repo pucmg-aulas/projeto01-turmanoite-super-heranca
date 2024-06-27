@@ -146,10 +146,26 @@ public class GerenciarReservaController {
             Mesa mesa = reserva.getMesa();
 
             mesa.setDisponivel(true); // Marca a mesa como desocupada
+
+            // Calcula o total da comanda com taxa de serviço
+            double total = reserva.getComanda().calcularTotal();
+            double totalComTaxa = reserva.getComanda().calcularTotalComTaxa();
+            double valorPorPessoa = totalComTaxa / reserva.getProprietario().getQtdPessoas();
+
+            // Remove a reserva e grava as alterações
             reservas.removeReserva(reserva);
             mesas.grava();
 
-            JOptionPane.showMessageDialog(view, "Reserva finalizada com sucesso!");
+            // Limpa a tabela de itens
+            DefaultTableModel model = (DefaultTableModel) this.view.getTableItens().getModel();
+            model.setRowCount(0);
+
+            // Exibe a mensagem com os valores calculados
+            JOptionPane.showMessageDialog(view, String.format(
+                "Reserva finalizada com sucesso!\n\nTotal: R$ %.2f\nTotal com taxa de serviço: R$ %.2f\nValor por pessoa: R$ %.2f",
+                total, totalComTaxa, valorPorPessoa
+            ));
+
             carregarReservasNaTabela();
         } else {
             JOptionPane.showMessageDialog(view, "Por favor, selecione uma reserva para finalizar.");
