@@ -1,24 +1,28 @@
 package controller;
 
+import Dao.Cardapio;
 import Dao.Mesas;
 import Dao.Reservas;
 import model.Reserva;
 import model.Mesa;
-import model.Prato;
-import model.Bebida;
 import views.GerenciarReservaView;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.util.List;
+import model.Bebida;
+import model.Prato;
 
 public class GerenciarReservaController {
     private GerenciarReservaView view;
     private Reservas reservas;
     private Mesas mesas;
+    private Cardapio cardapio;
 
     public GerenciarReservaController() {
         this.view = new GerenciarReservaView();
         this.reservas = Reservas.getInstance();
         this.mesas = Mesas.getInstance();
+        this.cardapio = Cardapio.getInstance();
         initController();
         carregarReservasNaTabela();
     }
@@ -68,22 +72,18 @@ public class GerenciarReservaController {
             String nomeCliente = (String) this.view.getTableReservas().getValueAt(selectedRow, 0);
             Reserva reserva = reservas.getReservaPorNomeCliente(nomeCliente);
 
-            String[] pratos = {"Moqueca de Tilápia", "Falafel Assado", "Salada Primavera com Macarrão Konjac", "Escondidinho de Frango", "Strogonoff", "Caçarola de carne com legumes"};
-            double[] precos = {45.00, 30.00, 25.00, 35.00, 40.00, 50.00};
-            String pratoEscolhido = (String) JOptionPane.showInputDialog(view, "Escolha o prato:", "Adicionar Prato", JOptionPane.QUESTION_MESSAGE, null, pratos, pratos[0]);
+            List<Prato> pratosDisponiveis = cardapio.getPratos();
+            String[] opcoes = pratosDisponiveis.stream().map(Prato::getNome).toArray(String[]::new);
+            String pratoSelecionado = (String) JOptionPane.showInputDialog(view, "Selecione um prato", "Adicionar Prato", JOptionPane.PLAIN_MESSAGE, null, opcoes, opcoes[0]);
 
-            if (pratoEscolhido != null) {
-                for (int i = 0; i < pratos.length; i++) {
-                    if (pratoEscolhido.equals(pratos[i])) {
-                        Prato prato = new Prato(pratoEscolhido, precos[i]);
-                        reserva.getComanda().addPrato(prato);
-                        break;
-                    }
+            if (pratoSelecionado != null) {
+                Prato prato = pratosDisponiveis.stream().filter(p -> p.getNome().equals(pratoSelecionado)).findFirst().orElse(null);
+                if (prato != null) {
+                    reserva.getComanda().addPrato(prato);
+                    carregarItensDaReserva();
+                    reservas.grava();
                 }
             }
-
-            carregarItensDaReserva();
-            reservas.grava();
         } else {
             JOptionPane.showMessageDialog(view, "Por favor, selecione uma reserva primeiro.");
         }
@@ -95,22 +95,18 @@ public class GerenciarReservaController {
             String nomeCliente = (String) this.view.getTableReservas().getValueAt(selectedRow, 0);
             Reserva reserva = reservas.getReservaPorNomeCliente(nomeCliente);
 
-            String[] bebidas = {"Água", "Suco", "Refrigerante", "Cerveja", "Taça de vinho"};
-            double[] precos = {5.00, 10.00, 7.00, 12.00, 15.00};
-            String bebidaEscolhida = (String) JOptionPane.showInputDialog(view, "Escolha a bebida:", "Adicionar Bebida", JOptionPane.QUESTION_MESSAGE, null, bebidas, bebidas[0]);
+            List<Bebida> bebidasDisponiveis = cardapio.getBebidas();
+            String[] opcoes = bebidasDisponiveis.stream().map(Bebida::getNome).toArray(String[]::new);
+            String bebidaSelecionada = (String) JOptionPane.showInputDialog(view, "Selecione uma bebida", "Adicionar Bebida", JOptionPane.PLAIN_MESSAGE, null, opcoes, opcoes[0]);
 
-            if (bebidaEscolhida != null) {
-                for (int i = 0; i < bebidas.length; i++) {
-                    if (bebidaEscolhida.equals(bebidas[i])) {
-                        Bebida bebida = new Bebida(bebidaEscolhida, precos[i]);
-                        reserva.getComanda().addBebida(bebida);
-                        break;
-                    }
+            if (bebidaSelecionada != null) {
+                Bebida bebida = bebidasDisponiveis.stream().filter(b -> b.getNome().equals(bebidaSelecionada)).findFirst().orElse(null);
+                if (bebida != null) {
+                    reserva.getComanda().addBebida(bebida);
+                    carregarItensDaReserva();
+                    reservas.grava();
                 }
             }
-
-            carregarItensDaReserva();
-            reservas.grava();
         } else {
             JOptionPane.showMessageDialog(view, "Por favor, selecione uma reserva primeiro.");
         }
@@ -126,9 +122,9 @@ public class GerenciarReservaController {
             Reserva reserva = reservas.getReservaPorNomeCliente(nomeCliente);
 
             if (itemTipo.equals("Prato")) {
-                reserva.getComanda().removePrato(itemNome);
+                reserva.getComanda().getPratos().removeIf(prato -> prato.getNome().equals(itemNome));
             } else if (itemTipo.equals("Bebida")) {
-                reserva.getComanda().removeBebida(itemNome);
+                reserva.getComanda().getBebidas().removeIf(bebida -> bebida.getNome().equals(itemNome));
             }
 
             carregarItensDaReserva();
@@ -145,30 +141,26 @@ public class GerenciarReservaController {
             Reserva reserva = reservas.getReservaPorNomeCliente(nomeCliente);
             Mesa mesa = reserva.getMesa();
 
+            double total = reserva.getComanda().calcularTotalComTaxa();
+            int numPessoas = reserva.getProprietario().getQtdPessoas();
+            double totalPorPessoa = total / numPessoas;
+
+            JOptionPane.showMessageDialog(view, String.format("Valor total: R$ %.2f\nValor por pessoa: R$ %.2f", total, totalPorPessoa));
+
             mesa.setDisponivel(true); // Marca a mesa como desocupada
-
-            // Calcula o total da comanda com taxa de serviço
-            double total = reserva.getComanda().calcularTotal();
-            double totalComTaxa = reserva.getComanda().calcularTotalComTaxa();
-            double valorPorPessoa = totalComTaxa / reserva.getProprietario().getQtdPessoas();
-
-            // Remove a reserva e grava as alterações
             reservas.removeReserva(reserva);
-            mesas.grava();
+            mesas.grava(); // Grava o estado das mesas
 
-            // Limpa a tabela de itens
-            DefaultTableModel model = (DefaultTableModel) this.view.getTableItens().getModel();
-            model.setRowCount(0);
-
-            // Exibe a mensagem com os valores calculados
-            JOptionPane.showMessageDialog(view, String.format(
-                "Reserva finalizada com sucesso!\n\nTotal: R$ %.2f\nTotal com taxa de serviço: R$ %.2f\nValor por pessoa: R$ %.2f",
-                total, totalComTaxa, valorPorPessoa
-            ));
-
+            JOptionPane.showMessageDialog(view, "Reserva finalizada com sucesso!");
             carregarReservasNaTabela();
+            limparTabelaItens();
         } else {
             JOptionPane.showMessageDialog(view, "Por favor, selecione uma reserva para finalizar.");
         }
+    }
+
+    private void limparTabelaItens() {
+        DefaultTableModel model = (DefaultTableModel) this.view.getTableItens().getModel();
+        model.setRowCount(0);
     }
 }

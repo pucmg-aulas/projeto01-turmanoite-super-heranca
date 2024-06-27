@@ -8,7 +8,7 @@ import model.Mesa;
 public class Mesas extends AbstractDAO implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     private List<Mesa> mesas;
     private static Mesas instance;
 
@@ -58,6 +58,9 @@ public class Mesas extends AbstractDAO implements Serializable {
     }
 
     private void carregaMesas() {
-        this.mesas = super.leitura(localArquivo);
+        List<Mesa> loadedMesas = super.leitura(localArquivo);
+        if (loadedMesas != null) {
+            this.mesas = loadedMesas;
+        }
     }
 }

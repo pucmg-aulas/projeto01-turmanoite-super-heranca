@@ -4,6 +4,7 @@ import controller.AdicionarMesaController;
 import controller.GerenciarReservaController;
 import controller.ListaEsperaController;
 import controller.NovaReservaController;
+import controller.GerenciarCardapioController;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -75,7 +76,7 @@ public class Menu {
         btnProdutos.setFont(new Font("Tahoma", Font.PLAIN, 14));
         btnProdutos.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Adicione aqui o controlador para Gerenciar Cardápio
+                new GerenciarCardapioController();
             }
         });
         GridBagConstraints gbc_btnProdutos = new GridBagConstraints();

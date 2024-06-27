@@ -113,6 +113,7 @@ public class NovaReservaController {
             ProprietarioReserva proprietario = new ProprietarioReserva(nome, telefone, totalPessoas, cpf);
             Reserva reserva = new Reserva(proprietario, mesa);
             reservas.addReserva(reserva); // Adiciona a reserva e salva
+            mesas.grava(); // Grava o estado das mesas
 
             JOptionPane.showMessageDialog(null, "Reserva feita com sucesso", "Sucesso", JOptionPane.OK_OPTION);
 

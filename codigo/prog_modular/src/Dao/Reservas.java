@@ -47,7 +47,6 @@ public class Reservas extends AbstractDAO implements Serializable {
         return reservas;
     }
 
-    // Alterar a visibilidade do método grava() para público
     public void grava() {
         super.grava(localArquivo, reservas);
     }

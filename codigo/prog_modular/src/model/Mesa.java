@@ -5,11 +5,11 @@ import java.time.LocalDateTime;
 
 public class Mesa implements Serializable {
     private static final long serialVersionUID = 1L;
-
+    
     private int id;
-    private boolean disponivel;
     private int capacidade;
     private String descricao;
+    private boolean disponivel;
     private LocalDateTime horaEntrada;
 
     public Mesa(int id, int capacidade, String descricao) {
@@ -23,20 +23,20 @@ public class Mesa implements Serializable {
         return id;
     }
 
-    public boolean isDisponivel() {
-        return disponivel;
-    }
-
-    public void setDisponivel(boolean disponivel) {
-        this.disponivel = disponivel;
-    }
-
     public int getCapacidade() {
         return capacidade;
     }
 
     public String getDescricao() {
         return descricao;
+    }
+
+    public boolean isDisponivel() {
+        return disponivel;
+    }
+
+    public void setDisponivel(boolean disponivel) {
+        this.disponivel = disponivel;
     }
 
     public LocalDateTime getHoraEntrada() {
